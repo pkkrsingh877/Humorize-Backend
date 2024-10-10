@@ -5,7 +5,10 @@ export interface JokeData extends Document {
     impressed?: number;
     unimpressed?: number;
     displeased?: number;
-    creatorId?: Schema.Types.ObjectId;
+    creatorId: Schema.Types.ObjectId;
+    approverId: Schema.Types.ObjectId;
+    createdAt?: Date;
+    updatedAt?: Date;
 }
 
 const JokeSchema: Schema<JokeData> = new Schema({
@@ -13,7 +16,8 @@ const JokeSchema: Schema<JokeData> = new Schema({
     impressed: { type: Number, default: 0 },
     unimpressed: { type: Number, default: 0 },
     displeased: { type: Number, default: 0 },
-    creatorId: { type: Schema.Types.ObjectId, required: true }
-});
+    creatorId: { type: Schema.Types.ObjectId, required: true },
+    approverId: { type: Schema.Types.ObjectId, required: true }
+}, { timestamps: true });
 
 export const Joke = mongoose.model<JokeData>('Joke', JokeSchema);
