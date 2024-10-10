@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 import bcrypt from 'bcrypt';
 
 export interface UserData extends Document {
@@ -8,6 +8,7 @@ export interface UserData extends Document {
     role?: 'User' | 'Moderator';
     createdAt?: Date;
     updatedAt?: Date;
+    comparePassword(enteredPassword: string): Promise<boolean>;
 }
 
 const UserSchema: Schema<UserData> = new Schema({
@@ -40,4 +41,4 @@ UserSchema.methods.comparePassword = async function (enteredPassword: string): P
     return bcrypt.compare(enteredPassword, this.password);
 };
 
-export const User = mongoose.model<UserData>('User', UserSchema);
+export const User: Model<UserData> = mongoose.model<UserData>('User', UserSchema);
