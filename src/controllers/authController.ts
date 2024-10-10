@@ -6,7 +6,7 @@ import jwt from 'jsonwebtoken';
 export const verifyJwt = async (req: Request, res: Response): Promise<void> => {
     try {
         // Assuming the token has user ID, fetch user data from the database
-        const user = await User.findById(req.user.userId).select('-password'); // Exclude password from the user object
+        const user = await User.findById(req.user._id).select('-password'); // Exclude password from the user object
 
         if (!user) {
             res.status(404).json({ message: 'User not found' });
@@ -15,7 +15,7 @@ export const verifyJwt = async (req: Request, res: Response): Promise<void> => {
 
         // If the user is found and token is valid, return user data
         res.status(200).json({
-            user: { id: req.user.userId, name: user.name, email: user.email }
+            user: { id: req.user._id, name: user.name, email: user.email }
         });
     } catch (error) {
         console.error('Error verifying token:', error);

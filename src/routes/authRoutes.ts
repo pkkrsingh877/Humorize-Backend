@@ -1,6 +1,11 @@
 import express, { Request, Response, NextFunction } from 'express';
 import { signup, login, verifyJwt } from '../controllers/authController.js';
 import jwt from 'jsonwebtoken';
+import { Schema } from 'mongoose';
+
+interface decodedToken {
+    _id: Schema.Types.ObjectId,
+}
 
 const router = express.Router();
 
@@ -13,8 +18,8 @@ const verifyToken = (req: Request, res: Response, next: NextFunction) => {
     }
 
     try {
-        const decoded = jwt.verify(token, process.env.JWT_SECRET) as { [key: string]: any }; // Verify the token with your JWT_SECRET
-        req.user = decoded; // Attach the decoded user info to the request object
+        const decoded = jwt.verify(token, process.env.JWT_SECRET) as decodedToken; // Verify the token with your JWT_SECRET
+        req.user._id = decoded._id; // Attach the decoded user info to the request object
         next();
     } catch (err) {
         console.error(err);
