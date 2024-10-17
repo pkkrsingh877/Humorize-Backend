@@ -7,7 +7,7 @@
     "outDir": "dist", // Specifies the output directory for compiled files
     "typeRoots": [
         "@types" ,
-        "./node_modules/@types",
+        "./node_modules/@types"
     ]
   },
   "include": ["src/**/*.ts","test/**/*.ts"], // Includes all TypeScript files in the project

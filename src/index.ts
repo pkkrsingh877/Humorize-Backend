@@ -12,8 +12,8 @@ app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
 // Import and mount routes
-import authRoutes from './routes/authRoutes.js';
-import jokeRoutes from './routes/jokeRoutes.js';
+import authRoutes from './routes/auth.js';
+import jokeRoutes from './routes/joke.js';
 
 app.use('/api/auth', authRoutes);
 app.use('/api/jokes', jokeRoutes);

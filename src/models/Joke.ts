@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from 'mongoose';
+import mongoose, { Schema, Document, Model } from 'mongoose';
 
 export interface JokeData extends Document {
     joke: string;
@@ -20,4 +20,6 @@ const JokeSchema: Schema<JokeData> = new Schema({
     approverId: { type: Schema.Types.ObjectId }
 }, { timestamps: true });
 
-export const Joke = mongoose.model<JokeData>('Joke', JokeSchema);
+const Joke: Model<JokeData> = mongoose.model<JokeData>('Joke', JokeSchema);
+
+export default Joke;
