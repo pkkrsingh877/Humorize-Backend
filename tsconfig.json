@@ -10,5 +10,5 @@
         "./node_modules/@types"
     ]
   },
-  "include": ["src/**/*.ts","test/**/*.ts"], // Includes all TypeScript files in the project
+  "include": ["src/**/*.ts","test/**/*.ts", "index.ts"], // Includes all TypeScript files in the project
 }

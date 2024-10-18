@@ -1,6 +1,5 @@
 import { Router, Request, Response } from 'express';
 import User from '../models/User.js';
-import { error } from 'console';
 import jwt from 'jsonwebtoken';
 
 const router = Router();
@@ -20,7 +19,7 @@ router.post('/signup', async (req: Request, res: Response) => {
             const token = jwt.sign({ id: newUser._id }, process.env.JWT_SECRET, {
                 expiresIn: '30d'
             });
-            res.status(200).json({ success: 'User created successfully' });
+            res.status(200).json({ success: 'User created successfully', token });
         }
         res.status(400).json({ error: 'User creation failed!' });
     } catch (error) {
@@ -39,7 +38,7 @@ router.post('/login', async (req: Request, res: Response) => {
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
 
-        res.status(201).json({ token });
+        res.status(201).json({ success: 'User logged in successfully', token });
     } catch (error) {
         res.status(400).json({ error: error })
     }

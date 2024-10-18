@@ -11,9 +11,14 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan('dev'));
 
+// Connect to MongoDB
+mongoose.connect(process.env.MONGODB_URI)
+    .then(() => console.log('MongoDB connected'))
+    .catch(err => console.error('MongoDB connection error:', err));
+
 // Import and mount routes
-import authRoutes from './routes/auth.js';
-import jokeRoutes from './routes/joke.js';
+import authRoutes from './src/routes/auth.js';
+import jokeRoutes from './src/routes/joke.js';
 
 app.use('/api/auth', authRoutes);
 app.use('/api/jokes', jokeRoutes);

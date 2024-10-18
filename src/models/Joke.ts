@@ -8,7 +8,7 @@ export interface JokeData extends Document {
     creatorId: Schema.Types.ObjectId;
     approverId?: Schema.Types.ObjectId;
     createdAt?: Date;
-    updatedAt: Date;
+    updatedAt?: Date;
 }
 
 const JokeSchema: Schema<JokeData> = new Schema({
