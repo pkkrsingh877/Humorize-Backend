@@ -20,8 +20,9 @@ router.post('/signup', async (req: Request, res: Response) => {
                 expiresIn: '30d'
             });
             res.status(200).json({ success: 'User created successfully', token });
+        } else {
+            res.status(400).json({ error: 'User creation failed!' });
         }
-        res.status(400).json({ error: 'User creation failed!' });
     } catch (error) {
         res.status(400).json({ error });
     }
@@ -34,11 +35,10 @@ router.post('/login', async (req: Request, res: Response) => {
 
         if (!user || !(await user.comparePassword(password))) {
             res.status(400).json({ error: 'invalid credentials' });
+        } else {
+            const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
+            res.status(201).json({ success: 'User logged in successfully', token });
         }
-
-        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET, { expiresIn: '30d' });
-
-        res.status(201).json({ success: 'User logged in successfully', token });
     } catch (error) {
         res.status(400).json({ error: error })
     }

@@ -12,7 +12,7 @@ export interface JokeData extends Document {
 }
 
 const JokeSchema: Schema<JokeData> = new Schema({
-    joke: { type: String, required: true, unique: true, minlength: 1000 },
+    joke: { type: String, required: true, unique: true, maxlength: 1000 },
     impressed: { type: Number, default: 0 },
     unimpressed: { type: Number, default: 0 },
     displeased: { type: Number, default: 0 },

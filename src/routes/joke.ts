@@ -1,6 +1,5 @@
 import { Request, Response, Router } from 'express';
 import Joke from '../models/Joke.js';
-import User from '../models/User.js';
 
 const router = Router();
 
