@@ -1,5 +1,6 @@
-import { Request, Response, Router } from 'express';
+import { Request, Response, Router, NextFunction } from 'express';
 import Joke from '../models/Joke.js';
+import authMiddleware from '../middlewares/authMiddleware.js';
 
 const router = Router();
 
@@ -8,7 +9,7 @@ router.get('/', async (req: Request, res: Response) => {
     try {
         const jokes = await Joke.find({});
         if (jokes) {
-            res.status(200).json({ jokes });
+            res.status(200).json(jokes);
         } else {
             res.status(404).json({ error: 'Jokes Not Found!' });
         }
@@ -33,7 +34,7 @@ router.get('/:id', async (req: Request, res: Response) => {
 });
 
 // Delete individual Joke
-router.delete('/:id', async (req: Request, res: Response) => {
+router.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
         await Joke.deleteOne({ _id: id });
@@ -44,7 +45,7 @@ router.delete('/:id', async (req: Request, res: Response) => {
 });
 
 // Create new Joke
-router.post('/', async (req: Request, res: Response) => {
+router.post('/', authMiddleware, async (req: Request, res: Response) => {
     try {
         const { joke, creatorId } = req.body;
         const newJoke = await Joke.create({ joke, creatorId });
@@ -59,7 +60,7 @@ router.post('/', async (req: Request, res: Response) => {
 });
 
 // Create new Joke
-router.patch('/:id', async (req: Request, res: Response) => {
+router.patch('/:id', authMiddleware, async (req: Request, res: Response) => {
     try {
         const { joke } = req.body;
         const { id } = req.params;
@@ -68,6 +69,21 @@ router.patch('/:id', async (req: Request, res: Response) => {
             res.status(200).json({ success: 'Joke Updated Successfully', updatedJoke });
         } else {
             res.status(400).json({ error: 'Joke Updation Unsuccessfull!' });
+        }
+    } catch (error) {
+        res.status(400).json({ error });
+    }
+});
+
+// Get Single User's all Jokes
+router.get('/user/:id', async (req: Request, res: Response) => {
+    try {
+        const { id } = req.params;
+        const jokes = await Joke.find({ creatorId: id });
+        if (jokes) {
+            res.status(200).json(jokes);
+        } else {
+            res.status(404).json({ error: 'Jokes Not Found!' });
         }
     } catch (error) {
         res.status(400).json({ error });
