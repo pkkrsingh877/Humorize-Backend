@@ -48,6 +48,7 @@ router.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
 router.post('/', authMiddleware, async (req: Request, res: Response) => {
     try {
         const { joke, creatorId } = req.body;
+        console.log(req.body)
         const newJoke = await Joke.create({ joke, creatorId });
         if (newJoke) {
             res.status(200).json({ success: 'Joke Created Successfully', newJoke });
