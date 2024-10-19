@@ -7,7 +7,7 @@ const router = Router();
 // Get all Jokes
 router.get('/', async (req: Request, res: Response) => {
     try {
-        const jokes = await Joke.find({});
+        const jokes = await Joke.find({}).populate('creator', '-password');
         if (jokes) {
             res.status(200).json(jokes);
         } else {
@@ -22,7 +22,7 @@ router.get('/', async (req: Request, res: Response) => {
 router.get('/:id', async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const joke = await Joke.findOne({ _id: id });
+        const joke = await Joke.findOne({ _id: id }).populate('creator', 'name');
         if (joke) {
             res.status(200).json({ joke });
         } else {
@@ -47,9 +47,9 @@ router.delete('/:id', authMiddleware, async (req: Request, res: Response) => {
 // Create new Joke
 router.post('/', authMiddleware, async (req: Request, res: Response) => {
     try {
-        const { joke, creatorId } = req.body;
+        const { joke, creator } = req.body;
         console.log(req.body)
-        const newJoke = await Joke.create({ joke, creatorId });
+        const newJoke = await Joke.create({ joke, creator });
         if (newJoke) {
             res.status(200).json({ success: 'Joke Created Successfully', newJoke });
         } else {
@@ -80,7 +80,8 @@ router.patch('/:id', authMiddleware, async (req: Request, res: Response) => {
 router.get('/user/:id', async (req: Request, res: Response) => {
     try {
         const { id } = req.params;
-        const jokes = await Joke.find({ creatorId: id });
+        const jokes = await Joke.find({ creator: id }).populate('creator', '-password');
+        console.log(jokes.length > 0)
         if (jokes) {
             res.status(200).json(jokes);
         } else {
